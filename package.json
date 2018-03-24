@@ -4,15 +4,20 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --open",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@ionic/core": "^0.1.4-7",
+    "@types/howler": "^2.0.5",
+    "howler": "^2.0.9",
     "register-service-worker": "^1.0.0",
+    "rxjs": "^5.5.6",
+    "typescript": "^2.6.2",
     "vue": "^2.5.13",
     "vue-class-component": "^6.0.0",
     "vue-property-decorator": "^6.0.0",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue-ts-plugin": "^0.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-pwa": "^3.0.0-beta.1",

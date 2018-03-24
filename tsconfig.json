@@ -13,11 +13,18 @@
     "types": [
       "node",
     ],
+    "lib": [
+      "dom",
+      "es2015"
+    ],
     "paths": {
       "@/*": [
         "src/*"
       ]
-    }
+    },
+    "plugins": [{
+      "name": "vue-ts-plugin"
+    }]
   },
   "include": [
     "src/**/*.ts",
