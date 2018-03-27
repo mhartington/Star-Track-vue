@@ -41,24 +41,37 @@
           <ion-spinner></ion-spinner>
         </div>
 
-      <ion-item
-        v-for="track of listing"
-        :key="track.id"
-        @click="goToDetail(track)">
-        <ion-thumbnail slot="start" >
-          <img :src="track.artworkUrl100" alt="">
-        </ion-thumbnail>
-        <ion-label>
-        <h2>{{track.trackName}}</h2>
-        <h3>{{track.artistName}}</h3>
-        <p>{{track.collectionName}}</p>
+        <ion-list v-if="!showCard">
+          <ion-item
+            v-for="track of listing"
+            :key="track.id"
+            @click="goToDetail(track)">
+            <ion-thumbnail slot="start" >
+              <img :src="track.artworkUrl100" alt="">
+            </ion-thumbnail>
+              <ion-label>
+                <h2>{{track.trackName}}</h2>
+                <h3>{{track.artistName}}</h3>
+                <p>{{track.collectionName}}</p>
 
-        </ion-label>
-        <ion-note slot="end">
-          {{track.trackTimeMillis | msToMins}}
-        </ion-note>
-      </ion-item>
+              </ion-label>
+              <ion-note slot="end">
+                {{track.trackTimeMillis | msToMins}}
+              </ion-note>
+          </ion-item>
+        </ion-list>
 
+        <div v-if="showCard">
+
+          <Music-Card :track="track" />
+            <ion-button
+              size="block"
+              color="success"
+              @click="clear()"
+              >
+              <ion-icon slot="icon-only" name="close" ></ion-icon>
+            </ion-button>
+        </div>
       </ion-grid>
     </ion-content>
   </div>
@@ -72,12 +85,19 @@ import { switchMap } from "rxjs/operators/switchMap";
 import { filter } from "rxjs/operators/filter";
 import { load } from "@/providers/itunes";
 import { Subject } from "rxjs/Subject";
-@Component
+import MusicCard from "@/components/MusicCard.vue";
+@Component({
+    components: {
+      MusicCard
+    }
+})
 export default class SearchPage extends Vue {
   private searchInput: string = "";
   private onInput$: any;
   private isError: boolean = false;
   public showSpinner: boolean = false;
+  public track = null;
+  public showCard = false;
   public listing = [];
 
   private setSearch(trending: string) {
@@ -89,7 +109,9 @@ export default class SearchPage extends Vue {
     this.listing = [];
   }
   private goToDetail(track: any) {
-    this.$router.push({ name: 'trackDetail', params: { id: track.trackId }})
+    this.showCard = true
+    this.track = track
+    // this.$router.push({ name: 'trackDetail', params: { id: track.trackId }})
   }
   protected mounted() {
     this.onInput$ = new Subject<string>();
@@ -121,6 +143,10 @@ export default class SearchPage extends Vue {
           console.log(err);
         }
       );
+  }
+  clear() {
+    this.track = null;
+    this.showCard = false;
   }
 }
 </script>

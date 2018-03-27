@@ -3,7 +3,11 @@
     <ion-grid no-padding>
       <ion-row align-items-center>
         <ion-col col-12 col-md-5>
-          <div>
+          <div v-bind:class="{
+            '': !isPlaying,
+            'playing': isPlaying ,
+            'is-seeking': isSeeking
+          }" class="track-img">
             <img :src="fullImage()" alt="">
           </div>
         </ion-col>
@@ -40,7 +44,56 @@
     </ion-grid>
   </ion-card>
 </template>
+<style>
 
+  .track-img {
+    transition: all 500ms cubic-bezier(0.42, 0, 0, 1.93);
+    transform: scale3d(0.8, 0.8, 0.8);
+    max-width: 400px;
+    margin: auto;
+    border-radius: 15px;
+    }
+    .track-img.playing {
+      transform: scale3d(0.89, 0.89, 0.89);
+    }
+
+    .track-img.is-seeking {
+      transition: all 100ms linear;
+      transform: scale3d(0.8, 0.8, 0.8) translateY(-35px);
+    }
+
+    .track-img img {
+      border-radius: 15px;
+    }
+
+  .track-img .background-shadow {
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    transition: all 300ms cubic-bezier(0.42, 0, 0.36, 1.46);
+    z-index: -1;
+    opacity: 0;
+    background-color: rgb(0, 0, 0);
+    filter: blur(20px);
+    border-radius: 15px;
+    transform: scale3d(0.84, 0.84, 0.84);
+  }
+  .track-img.playing .background-shadow {
+    transform: scale3d(0.9, 0.9, 0.9) translate3d(0, 35px, 0);
+  }
+  .range-ios .range-knob {
+    transition: transform 100ms linear;
+    transform: scale3d(0.5, 0.5, 0.5);
+    background: map-get($colors, secondary);
+  }
+
+  .range-knob-handle.range-knob-pressed .range-knob {
+    transform: scale3d(0.8, 0.8, 0.8);
+  }
+</style>
 <script lang="ts">
 import { Howl } from "howler";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
